@@ -14,8 +14,10 @@ function isValidUrl(value) {
 }
 
 async function shortenUrl(longUrl) {
+  const trimmed = longUrl.trim()
+
   const response = await fetch(
-    `https://api.shrtco.de/v2/shorten?url=${encodeURIComponent(longUrl.trim())}`,
+    `https://is.gd/create.php?format=json&url=${encodeURIComponent(trimmed)}`,
   )
 
   if (!response.ok) {
@@ -24,13 +26,13 @@ async function shortenUrl(longUrl) {
 
   const data = await response.json()
 
-  if (!data.ok) {
-    throw new Error(data.error || 'Failed to shorten URL.')
+  if (data.errorcode) {
+    throw new Error(data.errormessage || 'Failed to shorten URL.')
   }
 
   return {
-    shortUrl: data.result.full_short_link,
-    originalUrl: longUrl.trim(),
+    shortUrl: data.shorturl,
+    originalUrl: trimmed,
     createdAt: new Date().toISOString(),
   }
 }
@@ -83,7 +85,18 @@ function App() {
 
   async function handleCopy(shortUrl) {
     try {
-      await navigator.clipboard.writeText(shortUrl)
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(shortUrl)
+      } else {
+        const textarea = document.createElement('textarea')
+        textarea.value = shortUrl
+        textarea.style.position = 'fixed'
+        textarea.style.opacity = '0'
+        document.body.appendChild(textarea)
+        textarea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+      }
       setCopiedId(shortUrl)
       setTimeout(() => setCopiedId(null), 2000)
     } catch {
@@ -117,7 +130,7 @@ function App() {
               disabled={loading}
             />
             <button type="submit" className="button" disabled={isSubmitDisabled}>
-              {loading ? 'Shortening…' : 'Shorten'}
+              {loading ? 'Shortening...' : 'Shorten'}
             </button>
           </div>
 
@@ -129,7 +142,7 @@ function App() {
         {loading && (
           <div className="status status--loading" role="status" aria-live="polite">
             <span className="spinner" aria-hidden="true" />
-            Shortening your URL…
+            Shortening your URL...
           </div>
         )}
 
