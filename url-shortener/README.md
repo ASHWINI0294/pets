@@ -1,26 +1,48 @@
-# URL Shortener (React + JavaScript)
+# URL Shortener — StackBlitz (React + JavaScript)
 
-A React URL shortener where users paste a long link, validate it, call a shortening API, and manage a history of recent links with copy-to-clipboard support.
+StackBlitz already gives you the Vite + React boilerplate. You only need to replace two files.
 
-## Features
+## Step-by-step
 
-- URL input with client-side validation (`http://` or `https://`)
-- Submit to the [shrtco.de](https://shrtco.de/) API
-- Loading, success, and error states
-- Submit button disabled while loading or when the URL is invalid
-- Recent links history (persisted in `localStorage`)
-- One-click copy for any shortened URL
+### 1. Open StackBlitz
 
-## Run locally
+Go to [stackblitz.com](https://stackblitz.com) and start a **React + JavaScript** project (Vite template).
 
-```bash
-cd url-shortener
-npm install
-npm run dev
-```
+### 2. Replace `src/App.jsx`
 
-Open the URL shown in the terminal (usually `http://localhost:5173`).
+Delete the default counter/demo code and paste in the contents of `src/App.jsx` from this folder.
 
-## StackBlitz
+### 3. Replace `src/App.css`
 
-You can also open this folder in [StackBlitz](https://stackblitz.com/) as a Vite + React project and run `npm install` then `npm run dev`.
+Delete the default styles and paste in the contents of `src/App.css` from this folder.
+
+### 4. (Optional) Update `src/index.css`
+
+Replace the body styles with the contents of `src/index.css` for the page background. You can skip this if you prefer the default StackBlitz look.
+
+### 5. Save and test
+
+StackBlitz hot-reloads automatically. Try:
+
+1. Type an invalid URL → **Shorten** stays disabled
+2. Type `https://example.com/some/long/path` → click **Shorten**
+3. See the loading state, then the short link
+4. Click **Copy** on the result or in **Recent links**
+
+## What the app does
+
+| Feature | How |
+|--------|-----|
+| URL validation | `new URL()` — must be `http://` or `https://` |
+| API | [shrtco.de](https://shrtco.de/) — no API key |
+| Loading | Spinner + disabled button |
+| Success / error | Conditional rendering from state |
+| History | Saved in `localStorage` |
+| Copy | `navigator.clipboard.writeText()` |
+
+## Files you do **not** need to change
+
+- `src/main.jsx`
+- `index.html`
+- `package.json`
+- `vite.config.js`
