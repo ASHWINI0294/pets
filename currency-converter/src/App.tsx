@@ -49,7 +49,9 @@ export default function App() {
   return (
     <div className="converter">
       <h1>Currency Converter</h1>
-      <p className="subtitle">Enter an amount and select currencies to convert.</p>
+      <p className="subtitle">
+        Enter an amount and select currencies to convert. (Using simulated rates for demo.)
+      </p>
 
       <form onSubmit={handleConvert}>
         <div className="field">
@@ -120,7 +122,9 @@ export default function App() {
         </button>
       </form>
 
-      {loading && <div className="status loading">Fetching exchange rate…</div>}
+      {loading && (
+        <div className="status loading">Fetching simulated exchange rate…</div>
+      )}
 
       {error && !loading && <div className="status error">{error}</div>}
 

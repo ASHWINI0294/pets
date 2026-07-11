@@ -1,24 +1,36 @@
-import type { CurrencyCode, ExchangeRateResponse } from '../types'
+import type { CurrencyCode } from '../types'
 
-const API_BASE = 'https://api.frankfurter.app'
+// Simulated rates (USD base). Works in StackBlitz where external APIs are often blocked.
+const MOCK_RATES: Record<CurrencyCode, number> = {
+  USD: 1,
+  EUR: 0.92,
+  GBP: 0.79,
+  JPY: 149.5,
+  INR: 83.12,
+  AUD: 1.53,
+  CAD: 1.36,
+}
+
+function convertWithMockRates(
+  amount: number,
+  from: CurrencyCode,
+  to: CurrencyCode,
+): number {
+  const inUsd = amount / MOCK_RATES[from]
+  return inUsd * MOCK_RATES[to]
+}
 
 export async function fetchExchangeRate(
   amount: number,
   from: CurrencyCode,
   to: CurrencyCode,
 ): Promise<number> {
-  const url = `${API_BASE}/latest?amount=${amount}&from=${from}&to=${to}`
+  // Simulate network delay so loading state is visible in the UI
+  await new Promise((resolve) => setTimeout(resolve, 600))
 
-  const response = await fetch(url)
+  const converted = convertWithMockRates(amount, from, to)
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch exchange rate (${response.status})`)
-  }
-
-  const data: ExchangeRateResponse = await response.json()
-  const converted = data.rates[to]
-
-  if (converted === undefined) {
+  if (!Number.isFinite(converted)) {
     throw new Error('Exchange rate not available for selected currencies')
   }
 
