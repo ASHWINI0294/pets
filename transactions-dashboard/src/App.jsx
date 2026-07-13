@@ -1,41 +1,18 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 
-// ---------- Mock API (swap these two functions for real fetch calls) ----------
-
-const MOCK_USER = {
-  name: 'Riya Sharma',
-  email: 'riya.sharma@example.com',
-  accountType: 'Premium',
-  balance: 12480.5,
-  currency: 'USD',
-}
-
-const MOCK_TRANSACTIONS = [
-  { id: '1', merchant: 'Amazon', amount: 129.99, currency: 'USD', status: 'completed', date: '2026-07-10T10:30:00Z' },
-  { id: '2', merchant: 'Starbucks', amount: 6.45, currency: 'USD', status: 'pending', date: '2026-07-11T08:15:00Z' },
-  { id: '3', merchant: 'Uber', amount: 24.5, currency: 'USD', status: 'failed', date: '2026-07-09T19:40:00Z' },
-  { id: '4', merchant: 'Netflix', amount: 15.99, currency: 'USD', status: 'completed', date: '2026-07-01T00:00:00Z' },
-  { id: '5', merchant: 'Target', amount: 58.2, currency: 'USD', status: 'pending', date: '2026-07-12T14:22:00Z' },
-  { id: '6', merchant: 'Apple Store', amount: 999, currency: 'USD', status: 'failed', date: '2026-07-08T09:05:00Z' },
-  { id: '7', merchant: 'Spotify', amount: 10.99, currency: 'USD', status: 'completed', date: '2026-07-05T00:00:00Z' },
-]
-
-const delay = (ms) => new Promise((r) => setTimeout(r, ms))
+// ---------- API calls (data comes from the server, not hardcoded in UI) ----------
 
 async function getUser() {
-  await delay(600)
-  // Uncomment next line to test error state:
-  // throw new Error('Failed to load user')
-  return MOCK_USER
+  const res = await fetch('/api/user')
+  if (!res.ok) throw new Error('Failed to load user')
+  return res.json()
 }
 
 async function getTransactions() {
-  await delay(800)
-  // Uncomment next line to test error state:
-  // throw new Error('Failed to load transactions')
-  // Return [] to test empty state:
-  return MOCK_TRANSACTIONS
+  const res = await fetch('/api/transactions')
+  if (!res.ok) throw new Error('Failed to load transactions')
+  return res.json()
 }
 
 // ---------- Helpers ----------
@@ -72,7 +49,7 @@ export default function App() {
     try {
       const [userData, txnData] = await Promise.all([getUser(), getTransactions()])
       setUser(userData)
-      setTransactions(txnData)
+      setTransactions(Array.isArray(txnData) ? txnData : txnData.transactions || [])
     } catch (err) {
       setError(err.message || 'Something went wrong')
     } finally {
@@ -116,19 +93,22 @@ export default function App() {
     <div className="app">
       <h1>My Dashboard</h1>
 
-      {/* User profile */}
       {user && (
         <section className="card">
           <h2>{user.name}</h2>
           <p className="muted">{user.email}</p>
           <div className="profile-row">
             <span>Account: <strong>{user.accountType}</strong></span>
-            <span>Balance: <strong className="balance">{formatAmount(user.balance, user.currency)}</strong></span>
+            <span>
+              Balance:{' '}
+              <strong className="balance">
+                {formatAmount(user.balance, user.currency)}
+              </strong>
+            </span>
           </div>
         </section>
       )}
 
-      {/* Transactions */}
       <section className="card">
         <h2>Transactions</h2>
 
@@ -172,7 +152,9 @@ export default function App() {
                 <tr key={t.id}>
                   <td>{t.merchant}</td>
                   <td>{formatAmount(t.amount, t.currency)}</td>
-                  <td><span className={`badge ${t.status}`}>{t.status}</span></td>
+                  <td>
+                    <span className={`badge ${t.status}`}>{t.status}</span>
+                  </td>
                   <td>{formatDate(t.date)}</td>
                 </tr>
               ))}
