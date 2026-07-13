@@ -1,43 +1,20 @@
-# Copying this into your StackBlitz React (JavaScript) boilerplate
+# Optimal StackBlitz solution — only 2 files
 
-This folder is a full, runnable copy of the dashboard (`npm install && npm run dev`)
-so you can review/test it here. To move it into your StackBlitz project, create the
-files below with the same paths, relative to your project's `src/` folder.
+In your StackBlitz React (JavaScript) boilerplate, **replace only these 2 files**:
 
-StackBlitz's default "React" starter is Vite-based, so it already ships with
-`src/main.jsx` and `src/App.jsx`. If yours uses `.js` extensions instead of `.jsx`,
-just keep the extension your boilerplate already uses — the content is identical.
+1. `src/App.jsx`  ← paste contents from this folder's `src/App.jsx`
+2. `src/App.css`  ← paste contents from this folder's `src/App.css`
 
-## Files to add
+That's it. Do **not** create any new folders or components.
 
-```
-src/api/mockApi.js
-src/utils/format.js
-src/hooks/useAsync.js
-src/components/LoadingState.jsx
-src/components/ErrorState.jsx
-src/components/EmptyState.jsx
-src/components/StatusBadge.jsx
-src/components/UserProfile.jsx
-src/components/TransactionFilters.jsx
-src/components/TransactionTable.jsx
-src/components/TransactionsSection.jsx
-```
+## How to test UI states quickly
 
-## Files to replace/edit
+Inside `src/App.jsx`, in `getUser()` / `getTransactions()`:
 
-- `src/App.jsx` — replace with this project's `src/App.jsx` (renders `<UserProfile />`
-  and `<TransactionsSection />`).
-- `src/App.css` — replace with this project's `src/App.css` (all dashboard styling).
-- `src/main.jsx` — no changes needed beyond making sure it renders `<App />`
-  (already the case in most boilerplates).
+- Error state → uncomment `throw new Error(...)`
+- Empty state → change `return MOCK_TRANSACTIONS` to `return []`
+- Success state → leave as-is (default)
 
-## Testing the different UI states
+## If your boilerplate uses `.js` instead of `.jsx`
 
-Append a query param to the StackBlitz preview URL:
-
-- `?mock=error` — both the profile and the transactions request fail (error state).
-- `?mock=userError` — only the profile request fails.
-- `?mock=txnsError` — only the transactions request fails.
-- `?mock=emptyTxns` — transactions resolve successfully but the list is empty (empty state).
-- No param — both requests succeed with sample data (success state).
+Rename / paste into `src/App.js` instead — same content works.
