@@ -1,4 +1,4 @@
-import Inventory from './components/Inventory.jsx'
+import Inventory from './components/Inventory'
 import './App.css'
 
 function App() {

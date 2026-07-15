@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
-import Inventory from './Inventory.jsx'
+import Inventory from './Inventory'
 
 describe('Inventory Management System', () => {
   let alertSpy

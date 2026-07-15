@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import ProductForm from './ProductForm.jsx'
-import ProductList from './ProductList.jsx'
+import ProductForm from './ProductForm'
+import ProductList from './ProductList'
 
 const Inventory = () => {
   const [products, setProducts] = useState([])

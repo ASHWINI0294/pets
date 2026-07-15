@@ -2,6 +2,12 @@
 
 React inventory tracker with product add, delete, and restock flows.
 
+## Components (`.js`)
+
+- `src/components/Inventory.js`
+- `src/components/ProductForm.js`
+- `src/components/ProductList.js`
+
 ## Scripts
 
 ```bash
