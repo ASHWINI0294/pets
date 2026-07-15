@@ -106,19 +106,23 @@
 }
 
 .login-card {
-  background: rgba(15, 23, 42, 0.72);
+  background: #ffffff;
   border: 1px solid rgba(148, 163, 184, 0.25);
   backdrop-filter: blur(14px);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-  color: #e2e8f0;
+  color: #000000;
+}
+
+.login-card h2 {
+  color: #000000;
 }
 
 .login-card .muted {
-  color: #94a3b8;
+  color: #000000;
 }
 
 .login-form label {
-  color: #94a3b8;
+  color: #000000;
 }
 
 .login-form input {
