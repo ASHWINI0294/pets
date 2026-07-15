@@ -160,11 +160,11 @@ export default function App() {
         <div className="login-content">
           <h1>FinTrackr</h1>
           <section className="card login-card">
-            <h2>Login</h2>
-            <p className="muted">Sign in to load your profile and transactions.</p>
+            <h2 className="login-title">Login</h2>
+            <p className="login-subtitle">Sign in to load your profile and transactions.</p>
 
             <form className="login-form" onSubmit={handleLogin}>
-              <label>
+              <label className="login-label">
                 Email
                 <input
                   type="email"
@@ -175,7 +175,7 @@ export default function App() {
                   disabled={loading}
                 />
               </label>
-              <label>
+              <label className="login-label">
                 Password
                 <input
                   type="password"

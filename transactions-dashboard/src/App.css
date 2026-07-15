@@ -331,3 +331,10 @@ body {
   margin: 0;
   background: #f5f6fa;
 }
+
+/* Force login text to black (overrides any earlier muted/light rules) */
+.login-title,
+.login-subtitle,
+.login-label {
+  color: #000000 !important;
+}
