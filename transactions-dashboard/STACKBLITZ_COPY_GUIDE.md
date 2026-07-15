@@ -1,24 +1,27 @@
-# StackBlitz — only 2 files (no public/api needed)
+# StackBlitz / local usage
 
-## Why you saw the error
+## Run locally
 
-StackBlitz was not serving `/api/users.json` from `public/`, so login failed.
+```bash
+cd transactions-dashboard
+npm install
+npm run dev
+npm test
+npm run build
+```
 
-## Fix
+## What to copy into StackBlitz
 
-Do **not** create `public/api` files. Replace only:
+Prefer the **React + TypeScript** StackBlitz template, then copy the `src/` folder structure from this project (and `package.json` / `vite.config.ts` / `tsconfig.json`).
 
-1. `src/App.jsx`
-2. `src/App.css`
+If you must stay on a JS-only StackBlitz, keep using the previous single-file JS version — TypeScript + tests need the TS tooling above.
 
-Mock API functions inside `App.jsx` simulate:
-- `GET /api/user` → `getUser(email, password)`
-- `GET /api/transactions` → `getTransactions(userId)`
-
-## Test credentials (type them yourself — not shown on UI)
+## Test credentials
 
 | Email | Password |
 |-------|----------|
 | `riya.sharma@example.com` | `riya123` |
 | `amit.patel@example.com` | `amit123` |
 | `sara.khan@example.com` | `sara123` |
+
+See `CONCEPTS.md` for how this maps to Promises, React state, architecture, and testing.
