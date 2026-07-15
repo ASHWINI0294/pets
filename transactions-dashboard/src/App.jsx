@@ -1,44 +1,73 @@
 import { useMemo, useState } from 'react'
 import './App.css'
 
-// After login we know WHO the user is (userId).
-// Then we fetch that user's profile + only their transactions.
+// ---------- Mock API (stands in for GET /api/user and GET /api/transactions) ----------
+// No public/ files needed — works immediately in StackBlitz.
 
-async function fetchJson(url) {
-  const res = await fetch(url)
-  const text = await res.text()
+const USERS = [
+  {
+    id: 'u1',
+    name: 'Riya Sharma',
+    email: 'riya.sharma@example.com',
+    password: 'riya123',
+    accountType: 'Premium',
+    balance: 12480.5,
+    currency: 'USD',
+  },
+  {
+    id: 'u2',
+    name: 'Amit Patel',
+    email: 'amit.patel@example.com',
+    password: 'amit123',
+    accountType: 'Standard',
+    balance: 3200,
+    currency: 'USD',
+  },
+  {
+    id: 'u3',
+    name: 'Sara Khan',
+    email: 'sara.khan@example.com',
+    password: 'sara123',
+    accountType: 'Premium',
+    balance: 8750.25,
+    currency: 'USD',
+  },
+]
 
-  // If the file is missing, Vite/StackBlitz returns index.html instead of JSON.
-  // That causes: Unexpected token '<', "<!doctype "... is not valid JSON
-  if (!res.ok || text.trim().startsWith('<')) {
-    throw new Error(
-      `Could not load ${url}. In StackBlitz create this file under public/ (see copy guide).`,
-    )
-  }
+const TRANSACTIONS = [
+  { id: '1', userId: 'u1', merchant: 'Amazon', amount: 129.99, currency: 'USD', status: 'completed', date: '2026-07-10T10:30:00Z' },
+  { id: '2', userId: 'u1', merchant: 'Starbucks', amount: 6.45, currency: 'USD', status: 'pending', date: '2026-07-11T08:15:00Z' },
+  { id: '3', userId: 'u1', merchant: 'Uber', amount: 24.5, currency: 'USD', status: 'failed', date: '2026-07-09T19:40:00Z' },
+  { id: '4', userId: 'u1', merchant: 'Netflix', amount: 15.99, currency: 'USD', status: 'completed', date: '2026-07-01T00:00:00Z' },
+  { id: '5', userId: 'u1', merchant: 'Target', amount: 58.2, currency: 'USD', status: 'pending', date: '2026-07-12T14:22:00Z' },
+  { id: '6', userId: 'u2', merchant: 'Flipkart', amount: 89, currency: 'USD', status: 'completed', date: '2026-07-08T12:00:00Z' },
+  { id: '7', userId: 'u2', merchant: 'Swiggy', amount: 18.75, currency: 'USD', status: 'pending', date: '2026-07-11T19:20:00Z' },
+  { id: '8', userId: 'u2', merchant: 'IRCTC', amount: 45, currency: 'USD', status: 'failed', date: '2026-07-07T06:10:00Z' },
+  { id: '9', userId: 'u3', merchant: 'Zara', amount: 210, currency: 'USD', status: 'completed', date: '2026-07-09T16:45:00Z' },
+  { id: '10', userId: 'u3', merchant: 'Airbnb', amount: 450, currency: 'USD', status: 'completed', date: '2026-07-03T09:00:00Z' },
+  { id: '11', userId: 'u3', merchant: 'Shell', amount: 52.3, currency: 'USD', status: 'pending', date: '2026-07-12T07:30:00Z' },
+]
 
-  return JSON.parse(text)
-}
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-async function loginUser(email, password) {
-  // Use .json so StackBlitz/Vite always serves it as a static file
-  const users = await fetchJson('/api/users.json')
-  const found = users.find(
+// Mock: login / resolve current user (like GET /api/user after auth)
+async function getUser(email, password) {
+  await delay(500)
+  const found = USERS.find(
     (u) => u.email.toLowerCase() === email.trim().toLowerCase() && u.password === password,
   )
-
   if (!found) throw new Error('Invalid email or password')
-
-  // Never keep password in React state
   const { password: _pw, ...safeUser } = found
   return safeUser
 }
 
-async function getTransactionsForUser(userId) {
-  const all = await fetchJson('/api/transactions.json')
-  // Real backend would do: GET /api/transactions?userId=...
-  // Here we filter client-side because StackBlitz only has static JSON files.
-  return all.filter((t) => t.userId === userId)
+// Mock: GET /api/transactions for the logged-in user
+async function getTransactions(userId) {
+  await delay(500)
+  return TRANSACTIONS.filter((t) => t.userId === userId)
 }
+
+// ---------- Helpers ----------
 
 function formatAmount(amount, currency = 'USD') {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount)
@@ -56,6 +85,8 @@ function formatDate(dateStr) {
 
 const FILTERS = ['all', 'completed', 'pending', 'failed']
 
+// ---------- App ----------
+
 export default function App() {
   const [user, setUser] = useState(null)
   const [transactions, setTransactions] = useState([])
@@ -63,8 +94,6 @@ export default function App() {
   const [error, setError] = useState('')
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
-
-  // Login form fields
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -74,11 +103,8 @@ export default function App() {
     setError('')
 
     try {
-      // 1) Authenticate → get THIS user's profile
-      const loggedInUser = await loginUser(email, password)
-      // 2) Fetch ONLY that user's transactions
-      const txns = await getTransactionsForUser(loggedInUser.id)
-
+      const loggedInUser = await getUser(email, password)
+      const txns = await getTransactions(loggedInUser.id)
       setUser(loggedInUser)
       setTransactions(txns)
       setFilter('all')
@@ -99,13 +125,12 @@ export default function App() {
     setPassword('')
   }
 
-  // If already logged in and you want a manual refresh of transactions:
   async function refreshTransactions() {
     if (!user) return
     setLoading(true)
     setError('')
     try {
-      const txns = await getTransactionsForUser(user.id)
+      const txns = await getTransactions(user.id)
       setTransactions(txns)
     } catch (err) {
       setError(err.message || 'Failed to refresh')
@@ -123,7 +148,6 @@ export default function App() {
     })
   }, [transactions, filter, search])
 
-  // ---------- LOGIN SCREEN ----------
   if (!user) {
     return (
       <div className="app">
@@ -167,7 +191,6 @@ export default function App() {
     )
   }
 
-  // ---------- DASHBOARD (after login) ----------
   return (
     <div className="app">
       <div className="topbar">
@@ -180,7 +203,9 @@ export default function App() {
       {error && (
         <div className="state state-error">
           {error}
-          <button type="button" onClick={refreshTransactions}>Retry</button>
+          <button type="button" onClick={refreshTransactions}>
+            Retry
+          </button>
         </div>
       )}
 
