@@ -150,43 +150,51 @@ export default function App() {
 
   if (!user) {
     return (
-      <div className="app">
-        <h1>My Dashboard</h1>
-        <section className="card login-card">
-          <h2>Login</h2>
-          <p className="muted">Sign in to load your profile and transactions.</p>
+      <div className="login-page">
+        <div className="aurora" aria-hidden="true">
+          <span className="aurora-blob aurora-blob--1" />
+          <span className="aurora-blob aurora-blob--2" />
+          <span className="aurora-blob aurora-blob--3" />
+        </div>
 
-          <form className="login-form" onSubmit={handleLogin}>
-            <label>
-              Email
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                required
-                disabled={loading}
-              />
-            </label>
-            <label>
-              Password
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                disabled={loading}
-              />
-            </label>
+        <div className="login-content">
+          <h1>FinTrackr</h1>
+          <section className="card login-card">
+            <h2>Login</h2>
+            <p className="muted">Sign in to load your profile and transactions.</p>
 
-            {error && <div className="form-error">{error}</div>}
+            <form className="login-form" onSubmit={handleLogin}>
+              <label>
+                Email
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                  disabled={loading}
+                />
+              </label>
+              <label>
+                Password
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  disabled={loading}
+                />
+              </label>
 
-            <button type="submit" disabled={loading}>
-              {loading ? 'Signing in…' : 'Sign in'}
-            </button>
-          </form>
-        </section>
+              {error && <div className="form-error">{error}</div>}
+
+              <button type="submit" disabled={loading}>
+                {loading ? 'Signing in…' : 'Sign in'}
+              </button>
+            </form>
+          </section>
+        </div>
       </div>
     )
   }
