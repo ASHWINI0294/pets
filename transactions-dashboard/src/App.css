@@ -21,6 +21,38 @@
   color: #e8ecf8;
 }
 
+.dashboard-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  padding: 24px 16px 48px;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #070b16;
+  color: #e8ecf8;
+}
+
+.dashboard-content {
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-page .topbar h1 {
+  color: #f8fafc;
+}
+
+.dashboard-page .card {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  color: #111827;
+}
+
+.dashboard-page .logout {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(148, 163, 184, 0.45);
+  color: #f8fafc;
+}
+
 .aurora {
   position: absolute;
   inset: 0;
