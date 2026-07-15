@@ -1,91 +1,119 @@
 .app {
-  min-height: 100vh;
-  padding: 2.5rem 1.25rem 3rem;
-}
-
-.inventory {
-  width: min(920px, 100%);
+  max-width: 780px;
   margin: 0 auto;
+  padding: 28px 20px 40px;
 }
 
 .inventory h1 {
-  margin: 0 0 1.5rem;
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  margin: 0 0 24px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
 }
 
 .inventory h2 {
-  margin: 0 0 1rem;
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--muted);
+  margin: 0 0 14px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2c3e50;
 }
 
-.inventory-management,
+.inventory-management {
+  margin-bottom: 32px;
+}
+
 .product-list-section {
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
 }
 
 .product-form {
-  display: grid;
-  gap: 0.9rem;
-  max-width: 420px;
-  padding: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
 }
 
 .form-field {
-  display: grid;
-  gap: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
 }
 
 .form-field label {
+  margin-bottom: 6px;
   font-size: 0.95rem;
-  color: var(--muted);
+  font-weight: 700;
+  color: #333333;
 }
 
 .form-field input {
   width: 100%;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  border-radius: 0.4rem;
-  padding: 0.7rem 0.85rem;
+  height: 36px;
+  padding: 8px 10px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #222222;
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.25);
 }
 
 .product-form button,
 .product-table button {
-  border: 0;
-  border-radius: 0.4rem;
-  background: var(--accent);
-  color: #fff;
-  padding: 0.65rem 1rem;
+  display: inline-block;
+  border: none;
+  border-radius: 4px;
+  background: #4caf50;
+  color: #ffffff;
+  font-weight: 700;
+  padding: 10px 16px;
   cursor: pointer;
-  transition: background 160ms ease, transform 160ms ease;
+}
+
+.product-form button {
+  width: fit-content;
+  margin-top: 4px;
 }
 
 .product-form button:hover,
 .product-table button:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
+  background: #45a049;
 }
 
 .product-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 8px;
 }
 
 .product-table th,
 .product-table td {
+  border: 1px solid #dddddd;
+  padding: 12px;
   text-align: left;
-  padding: 0.75rem 0.5rem;
-  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
 }
 
-.product-table td button + button {
-  margin-left: 0.5rem;
+.product-table th {
+  background: #f2f2f2;
+  font-weight: 700;
+  color: #333333;
+}
+
+.product-table td button {
+  padding: 8px 12px;
+  margin-right: 8px;
+  font-size: 0.9rem;
+}
+
+.product-table td button:last-child {
+  margin-right: 0;
 }
 
 [data-testid='no-products'] {
-  color: var(--muted);
-  font-size: 1.05rem;
+  margin: 4px 0 0;
+  color: #666666;
 }
