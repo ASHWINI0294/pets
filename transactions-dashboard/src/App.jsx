@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import './App.css'
 
 // After login we know WHO the user is (userId).
@@ -55,12 +55,6 @@ function formatDate(dateStr) {
 }
 
 const FILTERS = ['all', 'completed', 'pending', 'failed']
-
-const DEMO_ACCOUNTS = [
-  { email: 'riya.sharma@example.com', password: 'riya123' },
-  { email: 'amit.patel@example.com', password: 'amit123' },
-  { email: 'sara.khan@example.com', password: 'sara123' },
-]
 
 export default function App() {
   const [user, setUser] = useState(null)
@@ -120,10 +114,6 @@ export default function App() {
     }
   }
 
-  useEffect(() => {
-    // no auto-login — user must sign in first
-  }, [])
-
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase()
     return transactions.filter((t) => {
@@ -172,29 +162,6 @@ export default function App() {
               {loading ? 'Signing in…' : 'Sign in'}
             </button>
           </form>
-
-          <div className="demo-box">
-            <strong>Demo accounts</strong>
-            <ul>
-              {DEMO_ACCOUNTS.map((a) => (
-                <li key={a.email}>
-                  <button
-                    type="button"
-                    className="linkish"
-                    onClick={() => {
-                      setEmail(a.email)
-                      setPassword(a.password)
-                      setError('')
-                    }}
-                  >
-                    {a.email}
-                  </button>
-                  {' / '}
-                  {a.password}
-                </li>
-              ))}
-            </ul>
-          </div>
         </section>
       </div>
     )
