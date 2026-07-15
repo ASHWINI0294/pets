@@ -1,34 +1,36 @@
-# StackBlitz — 4 files only (API-driven, not hardcoded)
+# StackBlitz — login + multi-user dashboard
 
-Data is **not** hardcoded in React. The UI fetches it from:
+## How login → fetch works
 
-- `GET /api/user`
-- `GET /api/transactions`
+1. User enters **email + password** on the login screen
+2. App calls `GET /api/users`, finds a matching account
+3. On success it keeps that user's profile in state (without password)
+4. App calls `GET /api/transactions` and keeps only rows where `userId` matches
+5. Different credentials → different user → different transactions
 
-## Files to add/replace in your StackBlitz project
+So Riya / Amit / Sara are **not** hardcoded in the UI — they come from the API after login.
+
+## Demo credentials
+
+| Email | Password | What you see |
+|-------|----------|--------------|
+| `riya.sharma@example.com` | `riya123` | Riya + her 5 txns |
+| `amit.patel@example.com` | `amit123` | Amit + his 3 txns |
+| `sara.khan@example.com` | `sara123` | Sara + her 3 txns |
+
+## Files to copy into StackBlitz
 
 | File | Action |
 |------|--------|
-| `src/App.jsx` | **Replace** — contains only `fetch` + UI |
-| `src/App.css` | **Replace** — styles |
-| `public/api/user` | **Add** — JSON response for `/api/user` |
-| `public/api/transactions` | **Add** — JSON response for `/api/transactions` |
+| `src/App.jsx` | Replace |
+| `src/App.css` | Replace |
+| `public/api/users` | Add (all accounts) |
+| `public/api/transactions` | Add (all txns with `userId`) |
 
-Create the folder `public/api/` in StackBlitz, then paste the two API files there (no `.json` extension — so the URLs match the assignment exactly).
+Create folder `public/api/` first, then paste the two API files.
 
-## Why this is not hardcoded
+## Note about the original assignment
 
-`App.jsx` only does:
+Many StackBlitz tasks only ask for `GET /api/user` (singular = "currently logged-in user") with **no login UI**. That always shows one user by design.
 
-```js
-const res = await fetch('/api/user')
-return res.json()
-```
-
-All name/email/balance/transactions live in the API files. Change those files (or point `fetch` at a real backend) and the UI updates — no UI code changes needed.
-
-## Test UI states
-
-- **Error**: temporarily rename `public/api/user` → UI shows error + Retry
-- **Empty**: set `public/api/transactions` contents to `[]`
-- **Success**: leave the provided API files as-is
+This version adds login because you asked: *"how does it fetch the user if I login with another credentials?"*
