@@ -1,0 +1,68 @@
+.App {
+  font-family: Arial, Helvetica, sans-serif;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 28px 20px;
+  color: #2c3e50;
+}
+
+.App h1 {
+  margin: 0 0 24px;
+}
+
+.App h2 {
+  margin: 24px 0 14px;
+}
+
+.App form > div {
+  margin-bottom: 12px;
+}
+
+.App label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.App input {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 36px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.App button {
+  border: none;
+  border-radius: 4px;
+  background: #4caf50;
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 16px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.App button:hover {
+  background: #45a049;
+}
+
+.App table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.App th,
+.App td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.App th {
+  background: #f2f2f2;
+}
