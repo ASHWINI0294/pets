@@ -1,0 +1,91 @@
+.app {
+  min-height: 100vh;
+  padding: 2.5rem 1.25rem 3rem;
+}
+
+.inventory {
+  width: min(920px, 100%);
+  margin: 0 auto;
+}
+
+.inventory h1 {
+  margin: 0 0 1.5rem;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.inventory h2 {
+  margin: 0 0 1rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.inventory-management,
+.product-list-section {
+  margin-bottom: 2rem;
+}
+
+.product-form {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 420px;
+  padding: 1.25rem 0;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.form-field label {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.form-field input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 0.4rem;
+  padding: 0.7rem 0.85rem;
+}
+
+.product-form button,
+.product-table button {
+  border: 0;
+  border-radius: 0.4rem;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.product-form button:hover,
+.product-table button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-table th,
+.product-table td {
+  text-align: left;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.product-table td button + button {
+  margin-left: 0.5rem;
+}
+
+[data-testid='no-products'] {
+  color: var(--muted);
+  font-size: 1.05rem;
+}
