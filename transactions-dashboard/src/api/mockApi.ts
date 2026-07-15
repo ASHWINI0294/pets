@@ -1,0 +1,71 @@
+import type { Transaction, User, UserCredentials } from '../types'
+import { delay } from '../utils/delay'
+
+const USERS: UserCredentials[] = [
+  {
+    id: 'u1',
+    name: 'Riya Sharma',
+    email: 'riya.sharma@example.com',
+    password: 'riya123',
+    accountType: 'Premium',
+    balance: 12480.5,
+    currency: 'USD',
+  },
+  {
+    id: 'u2',
+    name: 'Amit Patel',
+    email: 'amit.patel@example.com',
+    password: 'amit123',
+    accountType: 'Standard',
+    balance: 3200,
+    currency: 'USD',
+  },
+  {
+    id: 'u3',
+    name: 'Sara Khan',
+    email: 'sara.khan@example.com',
+    password: 'sara123',
+    accountType: 'Premium',
+    balance: 8750.25,
+    currency: 'USD',
+  },
+]
+
+const TRANSACTIONS: Transaction[] = [
+  { id: '1', userId: 'u1', merchant: 'Amazon', amount: 129.99, currency: 'USD', status: 'completed', date: '2026-07-10T10:30:00Z' },
+  { id: '2', userId: 'u1', merchant: 'Starbucks', amount: 6.45, currency: 'USD', status: 'pending', date: '2026-07-11T08:15:00Z' },
+  { id: '3', userId: 'u1', merchant: 'Uber', amount: 24.5, currency: 'USD', status: 'failed', date: '2026-07-09T19:40:00Z' },
+  { id: '4', userId: 'u1', merchant: 'Netflix', amount: 15.99, currency: 'USD', status: 'completed', date: '2026-07-01T00:00:00Z' },
+  { id: '5', userId: 'u1', merchant: 'Target', amount: 58.2, currency: 'USD', status: 'pending', date: '2026-07-12T14:22:00Z' },
+  { id: '6', userId: 'u2', merchant: 'Flipkart', amount: 89, currency: 'USD', status: 'completed', date: '2026-07-08T12:00:00Z' },
+  { id: '7', userId: 'u2', merchant: 'Swiggy', amount: 18.75, currency: 'USD', status: 'pending', date: '2026-07-11T19:20:00Z' },
+  { id: '8', userId: 'u2', merchant: 'IRCTC', amount: 45, currency: 'USD', status: 'failed', date: '2026-07-07T06:10:00Z' },
+  { id: '9', userId: 'u3', merchant: 'Zara', amount: 210, currency: 'USD', status: 'completed', date: '2026-07-09T16:45:00Z' },
+  { id: '10', userId: 'u3', merchant: 'Airbnb', amount: 450, currency: 'USD', status: 'completed', date: '2026-07-03T09:00:00Z' },
+  { id: '11', userId: 'u3', merchant: 'Shell', amount: 52.3, currency: 'USD', status: 'pending', date: '2026-07-12T07:30:00Z' },
+]
+
+/**
+ * Mock: authenticate and return the current user (stands in for GET /api/user).
+ * Uses async/await + Promises so callers handle loading/error the same way as real HTTP.
+ */
+export async function getUser(email: string, password: string): Promise<User> {
+  await delay(400)
+
+  const found = USERS.find(
+    (u) => u.email.toLowerCase() === email.trim().toLowerCase() && u.password === password,
+  )
+
+  if (!found) {
+    throw new Error('Invalid email or password')
+  }
+
+  const { password: _password, ...safeUser } = found
+  return safeUser
+}
+
+/** Mock: GET /api/transactions for one user. */
+export async function getTransactions(userId: string): Promise<Transaction[]> {
+  await delay(400)
+  return TRANSACTIONS.filter((t) => t.userId === userId)
+}
