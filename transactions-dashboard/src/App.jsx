@@ -4,11 +4,24 @@ import './App.css'
 // After login we know WHO the user is (userId).
 // Then we fetch that user's profile + only their transactions.
 
-async function loginUser(email, password) {
-  const res = await fetch('/api/users')
-  if (!res.ok) throw new Error('Failed to reach login API')
+async function fetchJson(url) {
+  const res = await fetch(url)
+  const text = await res.text()
 
-  const users = await res.json()
+  // If the file is missing, Vite/StackBlitz returns index.html instead of JSON.
+  // That causes: Unexpected token '<', "<!doctype "... is not valid JSON
+  if (!res.ok || text.trim().startsWith('<')) {
+    throw new Error(
+      `Could not load ${url}. In StackBlitz create this file under public/ (see copy guide).`,
+    )
+  }
+
+  return JSON.parse(text)
+}
+
+async function loginUser(email, password) {
+  // Use .json so StackBlitz/Vite always serves it as a static file
+  const users = await fetchJson('/api/users.json')
   const found = users.find(
     (u) => u.email.toLowerCase() === email.trim().toLowerCase() && u.password === password,
   )
@@ -21,10 +34,7 @@ async function loginUser(email, password) {
 }
 
 async function getTransactionsForUser(userId) {
-  const res = await fetch('/api/transactions')
-  if (!res.ok) throw new Error('Failed to load transactions')
-
-  const all = await res.json()
+  const all = await fetchJson('/api/transactions.json')
   // Real backend would do: GET /api/transactions?userId=...
   // Here we filter client-side because StackBlitz only has static JSON files.
   return all.filter((t) => t.userId === userId)

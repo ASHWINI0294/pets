@@ -1,36 +1,41 @@
-# StackBlitz — login + multi-user dashboard
+# StackBlitz fix for login error
 
-## How login → fetch works
+## Why you saw this error
 
-1. User enters **email + password** on the login screen
-2. App calls `GET /api/users`, finds a matching account
-3. On success it keeps that user's profile in state (without password)
-4. App calls `GET /api/transactions` and keeps only rows where `userId` matches
-5. Different credentials → different user → different transactions
+```
+Unexpected token '<', "<!doctype "... is not valid JSON
+```
 
-So Riya / Amit / Sara are **not** hardcoded in the UI — they come from the API after login.
+`fetch('/api/users')` did **not** find your JSON file, so StackBlitz returned the HTML page (`<!doctype html>...`). `.json()` then crashed.
 
-## Demo credentials
+## Why "riya" looked highlighted
 
-| Email | Password | What you see |
-|-------|----------|--------------|
-| `riya.sharma@example.com` | `riya123` | Riya + her 5 txns |
-| `amit.patel@example.com` | `amit123` | Amit + his 3 txns |
-| `sara.khan@example.com` | `sara123` | Sara + her 3 txns |
+That orange/yellow mark is **browser Find on page** (Ctrl+F / Cmd+F), not app styling. Clear the find box / press Esc and it goes away.
 
-## Files to copy into StackBlitz
+## Exact files to create in StackBlitz
 
-| File | Action |
-|------|--------|
-| `src/App.jsx` | Replace |
-| `src/App.css` | Replace |
-| `public/api/users` | Add (all accounts) |
-| `public/api/transactions` | Add (all txns with `userId`) |
+In the StackBlitz file tree:
 
-Create folder `public/api/` first, then paste the two API files.
+1. Create folder: `public`
+2. Inside it create folder: `api`
+3. Add these **2 files** (names must include `.json`):
 
-## Note about the original assignment
+### `public/api/users.json`
 
-Many StackBlitz tasks only ask for `GET /api/user` (singular = "currently logged-in user") with **no login UI**. That always shows one user by design.
+Paste the contents from this repo's `transactions-dashboard/public/api/users.json`
 
-This version adds login because you asked: *"how does it fetch the user if I login with another credentials?"*
+### `public/api/transactions.json`
+
+Paste the contents from this repo's `transactions-dashboard/public/api/transactions.json`
+
+4. Replace `src/App.jsx` and `src/App.css` with the repo versions.
+
+## Demo logins
+
+| Email | Password |
+|-------|----------|
+| `riya.sharma@example.com` | `riya123` |
+| `amit.patel@example.com` | `amit123` |
+| `sara.khan@example.com` | `sara123` |
+
+After the `.json` files exist, Sign in should work.
