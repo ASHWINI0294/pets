@@ -1,0 +1,187 @@
+/* Paste this entire file into StackBlitz as App.css (or styles.css) */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+  color: #102a2e;
+  background: linear-gradient(160deg, #e8f3ef 0%, #d7e8e2 45%, #c9d9e4 100%);
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.shell {
+  width: min(100%, 420px);
+  padding: 1.75rem;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(16, 42, 46, 0.12);
+}
+
+.shell h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.lede {
+  margin: 0.4rem 0 1.25rem;
+  color: #4d6a6f;
+  font-size: 0.95rem;
+}
+
+.converter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4d6a6f;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: #0f7a6c;
+  box-shadow: 0 0 0 3px rgba(15, 122, 108, 0.2);
+}
+
+.field input.invalid {
+  border-color: #b42318;
+}
+
+.currency-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.swap-btn {
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-bottom: 0.05rem;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.swap-btn:hover {
+  border-color: #0f7a6c;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.hint.error {
+  color: #b42318;
+}
+
+.convert-btn {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background: #0f7a6c;
+  color: #fff;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.convert-btn:hover:not(:disabled) {
+  background: #0a5a50;
+}
+
+.convert-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.outcome {
+  margin-top: 1rem;
+  min-height: 3.5rem;
+}
+
+.status {
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.status.loading {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.status.error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.status.result {
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+.result-eq {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.result-amount {
+  margin: 0.25rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.result-rate {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+@media (max-width: 480px) {
+  .currency-row {
+    grid-template-columns: 1fr;
+  }
+
+  .swap-btn {
+    justify-self: center;
+  }
+}
