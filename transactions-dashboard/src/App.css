@@ -63,6 +63,18 @@
   border-color: #b9c7c0;
 }
 
+.hint {
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.hint code {
+  font-size: 12px;
+  background: rgba(15, 107, 92, 0.08);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
 .panel {
   background: var(--surface);
   border: 1px solid var(--line);

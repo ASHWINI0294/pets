@@ -1,6 +1,22 @@
 # User Transactions Dashboard (React + JavaScript)
 
-Login with email/password, then see a **welcome message** and that user's **transactions**.
+Fetches the **current user** and **transactions** from the real API — no mocks.
+
+Auth is a **hardcoded access token** sent as a custom header on every `fetch`.
+
+## Setup
+
+In `src/App.jsx`, set the token from your assignment:
+
+```js
+const ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
+const ACCESS_TOKEN_HEADER = 'Access-Token' // rename if the API expects another header
+```
+
+Endpoints (relative — same as production):
+
+- `GET /api/user`
+- `GET /api/transactions`
 
 ## Run locally
 
@@ -10,29 +26,13 @@ npm install
 npm run dev
 ```
 
+## What the UI shows
+
+1. **Welcome, {name}!** from `/api/user`
+2. Account details when the API returns them
+3. That user’s transactions (search + status filter)
+
 ## StackBlitz
 
-Prefer a **React + JavaScript** Vite template. Copy:
-
-| From this folder | Into StackBlitz |
-|---|---|
-| `src/App.jsx` | `src/App.jsx` (replace) |
-| `src/App.css` | `src/App.css` (replace / create) |
-| `src/index.css` | `src/index.css` (optional polish) |
-| `index.html` | fonts link (optional) |
-
-Mock APIs live inside `App.jsx` — no `public/api` files needed.
-
-## Test credentials
-
-| Email | Password |
-|-------|----------|
-| `riya.sharma@example.com` | `riya123` |
-| `amit.patel@example.com` | `amit123` |
-| `sara.khan@example.com` | `sara123` |
-
-## What you get after login
-
-1. Welcome message: `Welcome, {name}!`
-2. Account type + balance
-3. That user's transaction list (search + status filter)
+Copy `src/App.jsx` + `src/App.css` (and optionally `src/index.css`).  
+Paste your real `ACCESS_TOKEN` value. No `public/api` mock files needed.

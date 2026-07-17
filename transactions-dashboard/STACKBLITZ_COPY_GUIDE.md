@@ -1,26 +1,31 @@
 # StackBlitz copy guide
 
-## Why in-app mocks?
+## Auth (production style)
 
-Fetching `/api/users.json` from `public/` often fails in StackBlitz (HTML returned instead of JSON).  
-`getUser` / `getTransactions` inside `App.jsx` avoid that.
+Hardcode the access token and send it as a custom header — do **not** mock requests:
+
+```js
+const ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
+const ACCESS_TOKEN_HEADER = 'Access-Token'
+
+fetch('/api/user', {
+  headers: {
+    Accept: 'application/json',
+    [ACCESS_TOKEN_HEADER]: ACCESS_TOKEN,
+  },
+})
+```
+
+Same header on `GET /api/transactions`.
 
 ## Files to copy
 
-1. Replace `src/App.jsx`
+1. Replace `src/App.jsx` (set `ACCESS_TOKEN` / header name to match the assignment)
 2. Replace/create `src/App.css`
-3. Optional: replace `src/index.css` and add the Google Fonts link from `index.html`
-
-## Credentials
-
-| Email | Password |
-|-------|----------|
-| `riya.sharma@example.com` | `riya123` |
-| `amit.patel@example.com` | `amit123` |
-| `sara.khan@example.com` | `sara123` |
+3. Optional: `src/index.css`
 
 ## Flow
 
-1. Login with email + password  
-2. See **Welcome, {name}!**  
-3. See **that user's transactions** only  
+1. App loads → fetches user + transactions with the access-token header  
+2. Shows **Welcome, {name}!**  
+3. Shows transactions (search + status filter)  
