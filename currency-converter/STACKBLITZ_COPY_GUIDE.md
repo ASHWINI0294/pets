@@ -1,12 +1,18 @@
-# Currency Converter — StackBlitz (2 files only)
+# StackBlitz Copy Guide — Currency Converter
 
-Your boilerplate is already set up. **Only replace these 2 files:**
+Your boilerplate is already set up. Replace / add these files:
 
 | StackBlitz file | Replace with |
 |---|---|
-| `src/App.jsx` (or `App.js`) | contents of `src/App.jsx` |
-| `src/App.css` (or `styles.css`) | contents of `src/App.css` |
+| `src/App.jsx` (or `App.js`) | `src/App.jsx` |
+| `src/App.css` (or `styles.css`) | `src/App.css` |
+| `src/converterLogic.js` | `src/converterLogic.js` (**create** this file) |
 
-If the boilerplate uses `styles.css`, paste `App.css` into `styles.css` and keep whatever import the boilerplate already has (`import './App.css'` or `import './styles.css'`).
+`converterLogic.js` holds validation + conversion math (needed by `App.jsx`).
 
-That’s it — no new folders, no API files, no TypeScript setup.
+## Run edge-case tests locally
+
+```bash
+cd currency-converter
+npm test
+```

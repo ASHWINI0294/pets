@@ -1,56 +1,12 @@
 import { useState } from 'react'
 import './App.css'
-
-const CURRENCIES = [
-  { code: 'USD', name: 'US Dollar' },
-  { code: 'EUR', name: 'Euro' },
-  { code: 'GBP', name: 'British Pound' },
-  { code: 'JPY', name: 'Japanese Yen' },
-  { code: 'INR', name: 'Indian Rupee' },
-  { code: 'AUD', name: 'Australian Dollar' },
-  { code: 'CAD', name: 'Canadian Dollar' },
-  { code: 'CHF', name: 'Swiss Franc' },
-  { code: 'CNY', name: 'Chinese Yuan' },
-  { code: 'SGD', name: 'Singapore Dollar' },
-]
-
-// Simulated USD-based rates (works in StackBlitz without an external API)
-const RATES = {
-  USD: 1,
-  EUR: 0.92,
-  GBP: 0.79,
-  JPY: 149.5,
-  INR: 83.12,
-  AUD: 1.53,
-  CAD: 1.36,
-  CHF: 0.88,
-  CNY: 7.24,
-  SGD: 1.34,
-}
-
-function isValidAmount(value) {
-  if (value.trim() === '') return false
-  const num = Number(value)
-  return Number.isFinite(num) && num > 0
-}
-
-function formatMoney(value, code) {
-  return new Intl.NumberFormat(undefined, {
-    style: 'currency',
-    currency: code,
-    maximumFractionDigits: code === 'JPY' ? 0 : 2,
-  }).format(value)
-}
-
-async function convertAmount(amount, from, to) {
-  await new Promise((resolve) => setTimeout(resolve, 400))
-  const converted = (amount / RATES[from]) * RATES[to]
-  const rate = RATES[to] / RATES[from]
-  if (!Number.isFinite(converted)) {
-    throw new Error('Exchange rate not available for the selected currencies.')
-  }
-  return { amount, from, to, converted, rate }
-}
+import {
+  CURRENCIES,
+  isValidAmount,
+  canConvert,
+  formatMoney,
+  convertAmount,
+} from './converterLogic.js'
 
 export default function App() {
   const [amount, setAmount] = useState('100')
@@ -62,7 +18,7 @@ export default function App() {
 
   const amountIsValid = isValidAmount(amount)
   const sameCurrency = fromCurrency === toCurrency
-  const canConvert = amountIsValid && !sameCurrency && !loading
+  const convertEnabled = canConvert(amount, fromCurrency, toCurrency, loading)
 
   function clearOutcome() {
     setResult(null)
@@ -77,7 +33,7 @@ export default function App() {
 
   async function handleConvert(event) {
     event.preventDefault()
-    if (!canConvert) return
+    if (!convertEnabled) return
 
     setLoading(true)
     clearOutcome()
@@ -174,7 +130,7 @@ export default function App() {
             <p className="hint error">Choose two different currencies.</p>
           )}
 
-          <button type="submit" className="convert-btn" disabled={!canConvert}>
+          <button type="submit" className="convert-btn" disabled={!convertEnabled}>
             {loading ? 'Converting…' : 'Convert'}
           </button>
         </form>
