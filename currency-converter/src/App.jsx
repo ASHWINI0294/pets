@@ -1,28 +1,40 @@
-import { FormEvent, useState } from 'react'
-import { fetchConversion } from './api/exchangeRate'
-import type { ConversionResult, CurrencyCode, CurrencyMeta } from './types'
+import { useState } from 'react'
 import './App.css'
 
-const CURRENCIES: CurrencyMeta[] = [
-  { code: 'USD', name: 'US Dollar', symbol: '$' },
-  { code: 'EUR', name: 'Euro', symbol: '€' },
-  { code: 'GBP', name: 'British Pound', symbol: '£' },
-  { code: 'JPY', name: 'Japanese Yen', symbol: '¥' },
-  { code: 'INR', name: 'Indian Rupee', symbol: '₹' },
-  { code: 'AUD', name: 'Australian Dollar', symbol: 'A$' },
-  { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$' },
-  { code: 'CHF', name: 'Swiss Franc', symbol: 'Fr' },
-  { code: 'CNY', name: 'Chinese Yuan', symbol: '¥' },
-  { code: 'SGD', name: 'Singapore Dollar', symbol: 'S$' },
+const CURRENCIES = [
+  { code: 'USD', name: 'US Dollar' },
+  { code: 'EUR', name: 'Euro' },
+  { code: 'GBP', name: 'British Pound' },
+  { code: 'JPY', name: 'Japanese Yen' },
+  { code: 'INR', name: 'Indian Rupee' },
+  { code: 'AUD', name: 'Australian Dollar' },
+  { code: 'CAD', name: 'Canadian Dollar' },
+  { code: 'CHF', name: 'Swiss Franc' },
+  { code: 'CNY', name: 'Chinese Yuan' },
+  { code: 'SGD', name: 'Singapore Dollar' },
 ]
 
-function isValidAmount(value: string): boolean {
+// Simulated USD-based rates (works in StackBlitz without an external API)
+const RATES = {
+  USD: 1,
+  EUR: 0.92,
+  GBP: 0.79,
+  JPY: 149.5,
+  INR: 83.12,
+  AUD: 1.53,
+  CAD: 1.36,
+  CHF: 0.88,
+  CNY: 7.24,
+  SGD: 1.34,
+}
+
+function isValidAmount(value) {
   if (value.trim() === '') return false
   const num = Number(value)
   return Number.isFinite(num) && num > 0
 }
 
-function formatMoney(value: number, code: CurrencyCode): string {
+function formatMoney(value, code) {
   return new Intl.NumberFormat(undefined, {
     style: 'currency',
     currency: code,
@@ -30,14 +42,23 @@ function formatMoney(value: number, code: CurrencyCode): string {
   }).format(value)
 }
 
+async function convertAmount(amount, from, to) {
+  await new Promise((resolve) => setTimeout(resolve, 400))
+  const converted = (amount / RATES[from]) * RATES[to]
+  const rate = RATES[to] / RATES[from]
+  if (!Number.isFinite(converted)) {
+    throw new Error('Exchange rate not available for the selected currencies.')
+  }
+  return { amount, from, to, converted, rate }
+}
+
 export default function App() {
   const [amount, setAmount] = useState('100')
-  const [fromCurrency, setFromCurrency] = useState<CurrencyCode>('USD')
-  const [toCurrency, setToCurrency] = useState<CurrencyCode>('EUR')
-  const [result, setResult] = useState<ConversionResult | null>(null)
+  const [fromCurrency, setFromCurrency] = useState('USD')
+  const [toCurrency, setToCurrency] = useState('EUR')
+  const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [swapPulse, setSwapPulse] = useState(false)
+  const [error, setError] = useState(null)
 
   const amountIsValid = isValidAmount(amount)
   const sameCurrency = fromCurrency === toCurrency
@@ -52,11 +73,9 @@ export default function App() {
     setFromCurrency(toCurrency)
     setToCurrency(fromCurrency)
     clearOutcome()
-    setSwapPulse(true)
-    window.setTimeout(() => setSwapPulse(false), 350)
   }
 
-  async function handleConvert(event: FormEvent) {
+  async function handleConvert(event) {
     event.preventDefault()
     if (!canConvert) return
 
@@ -64,18 +83,14 @@ export default function App() {
     clearOutcome()
 
     try {
-      const conversion = await fetchConversion(
+      const conversion = await convertAmount(
         Number(amount),
         fromCurrency,
         toCurrency,
       )
       setResult(conversion)
     } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : 'Something went wrong. Please try again.'
-      setError(message)
+      setError(err.message || 'Something went wrong. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -83,16 +98,9 @@ export default function App() {
 
   return (
     <div className="page">
-      <div className="atmosphere" aria-hidden="true" />
-
       <main className="shell">
-        <header className="brand">
-          <p className="brand-mark">Currency Converter</p>
-          <h1>Currency Converter</h1>
-          <p className="lede">
-            Convert between major currencies with instant demo exchange rates.
-          </p>
-        </header>
+        <h1>Currency Converter</h1>
+        <p className="lede">Enter an amount and convert between currencies.</p>
 
         <form className="converter" onSubmit={handleConvert}>
           <div className="field">
@@ -102,7 +110,6 @@ export default function App() {
               type="number"
               min="0"
               step="any"
-              inputMode="decimal"
               placeholder="e.g. 100"
               value={amount}
               className={amount !== '' && !amountIsValid ? 'invalid' : ''}
@@ -123,13 +130,13 @@ export default function App() {
                 id="from"
                 value={fromCurrency}
                 onChange={(e) => {
-                  setFromCurrency(e.target.value as CurrencyCode)
+                  setFromCurrency(e.target.value)
                   clearOutcome()
                 }}
               >
-                {CURRENCIES.map((currency) => (
-                  <option key={currency.code} value={currency.code}>
-                    {currency.code} — {currency.name}
+                {CURRENCIES.map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.code} — {c.name}
                   </option>
                 ))}
               </select>
@@ -137,20 +144,11 @@ export default function App() {
 
             <button
               type="button"
-              className={`swap-btn${swapPulse ? ' pulse' : ''}`}
+              className="swap-btn"
               onClick={handleSwap}
               aria-label="Swap currencies"
-              title="Swap currencies"
             >
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M7 7h11l-2.5-2.5M17 17H6l2.5 2.5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              ⇄
             </button>
 
             <div className="field">
@@ -159,13 +157,13 @@ export default function App() {
                 id="to"
                 value={toCurrency}
                 onChange={(e) => {
-                  setToCurrency(e.target.value as CurrencyCode)
+                  setToCurrency(e.target.value)
                   clearOutcome()
                 }}
               >
-                {CURRENCIES.map((currency) => (
-                  <option key={currency.code} value={currency.code}>
-                    {currency.code} — {currency.name}
+                {CURRENCIES.map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.code} — {c.name}
                   </option>
                 ))}
               </select>
@@ -182,15 +180,8 @@ export default function App() {
         </form>
 
         <section className="outcome" aria-live="polite">
-          {loading && (
-            <div className="status loading">
-              <span className="spinner" aria-hidden="true" />
-              Fetching exchange rate…
-            </div>
-          )}
-
+          {loading && <div className="status loading">Converting…</div>}
           {error && !loading && <div className="status error">{error}</div>}
-
           {result && !loading && !error && (
             <div className="status result">
               <p className="result-eq">
