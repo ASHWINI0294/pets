@@ -1,0 +1,35 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --ink: #102a2e;
+  --muted: #4d6a6f;
+  --paper: rgba(247, 251, 249, 0.88);
+  --line: rgba(16, 42, 46, 0.12);
+  --accent: #0f7a6c;
+  --accent-deep: #0a5a50;
+  --danger: #b42318;
+  --glow: rgba(34, 160, 140, 0.35);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Outfit', 'Segoe UI', sans-serif;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 700px at 12% -10%, #9fd8c8 0%, transparent 55%),
+    radial-gradient(900px 600px at 95% 10%, #f2d6a2 0%, transparent 50%),
+    linear-gradient(160deg, #e8f3ef 0%, #d7e8e2 45%, #c9d9e4 100%);
+  background-attachment: fixed;
+}
